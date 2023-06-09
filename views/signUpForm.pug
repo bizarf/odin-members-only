@@ -1,0 +1,23 @@
+extends layout
+
+block content
+  div(class="formDiv")
+    h1= title
+   
+    form(action="", method="post") 
+      label(for="firstname") #[strong First Name:]
+      input(type="text", name="firstname" value=(undefined===user ? "" : user.firstname))
+      label(for="lastname") #[strong Last Name:]
+      input(type="text", name="lastname" value=(undefined===user ? "" : user.lastname))
+      label(for="username") #[strong Username:]
+      input(type="email", name="username" value=(undefined===user ? "" : user.username))
+      label(for="password") #[strong Password:]
+      input(type="password", name="password")
+      label(for="confirmPassword") #[strong Confirm Password:]
+      input(type="password", name="confirmPassword")
+      button(type="submit") Submit
+
+      if errors
+        ul
+          for error in errors
+            li!= error.msg

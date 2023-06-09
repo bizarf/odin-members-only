@@ -1,0 +1,11 @@
+extends layout
+
+block content
+  div(class="formDiv")
+    h1 Join the club!
+    p Enter the secret passcode to join our club! 
+
+    form(action="", method="post") 
+        label(for="code") Code:
+        input(type="password", name="code")
+        button(type="submit") Submit

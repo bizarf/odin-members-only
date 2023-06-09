@@ -1,0 +1,19 @@
+extends layout
+
+block content
+  nav
+    ul
+      if user
+        li
+          a(href="/logout") Logout
+        li 
+          a(href="/join-club") Join the club!
+      else
+        li
+          a(href="/sign-up") Sign up
+        li
+          a(href="/login") Login
+
+  div
+    if user
+      h2 Welcome back #{user.fullname}
