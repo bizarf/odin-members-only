@@ -11,7 +11,7 @@ const MessageSchema = new Schema({
 });
 
 MessageSchema.virtual("timestamp_converted").get(function () {
-    return DateTime.fromJSDate(timestamp).toLocaleString(
+    return DateTime.fromJSDate(this.timestamp).toLocaleString(
         DateTime.DATETIME_MED_WITH_SECONDS
     );
 });

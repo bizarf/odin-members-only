@@ -15,7 +15,8 @@ block content
       input(type="password", name="password")
       label(for="confirmPassword") #[strong Confirm Password:]
       input(type="password", name="confirmPassword")
-      button(type="submit") Submit
+      div(class="submitBtn-div")
+        button(type="submit" class="submitBtn") Submit
 
       if errors
         ul

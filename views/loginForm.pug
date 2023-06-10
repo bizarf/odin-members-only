@@ -9,7 +9,8 @@ block content
       input(type="email", name="username" value=(undefined===username ? "" : username))
       label(for="password") #[strong Password:]
       input(type="password", name="password")
-      button(type="submit") Submit
+      div(class="submitBtn-div")
+        button(type="submit" class="submitBtn") Submit
 
       if errors
         ul

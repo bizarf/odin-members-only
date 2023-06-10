@@ -56,6 +56,7 @@ exports.user_create_post = [
             if (err) {
                 throw new Error(err);
             } else {
+                // hashedPassword instead of req.body.password as we want to save the hashed password to the database
                 const user = new User({
                     firstname: req.body.firstname,
                     lastname: req.body.lastname,
@@ -131,11 +132,53 @@ exports.user_logout_get = asyncHandler(async (req, res, next) => {
     });
 });
 
-// join club form
+// join club form GET
 exports.user_joinClub_get = asyncHandler(async (req, res, next) => {
-    if (req.user) {
-        const user = await User.findOne({ username: req.user.username });
+    if (req.user && req.user.membershipStatus === false) {
         res.render("joinClub");
+    } else {
+        res.redirect("/");
+    }
+});
+
+// join club form POST
+exports.user_joinClub_post = [
+    // clean input first and validate as well
+    body("code")
+        .trim()
+        .escape()
+        .notEmpty()
+        .withMessage("You must enter a code")
+        .custom(async (value, { req, res }) => {
+            await value;
+            if (value != 13572468) {
+                throw new Error("Wrong code!");
+            }
+        }),
+
+    asyncHandler(async (req, res, next) => {
+        const errors = validationResult(req);
+
+        if (!errors.isEmpty()) {
+            res.render("joinClub", {
+                errors: errors.array(),
+            });
+            return;
+        } else {
+            // find by the username and then set the membershipStatus to true
+            await User.findOneAndUpdate(
+                { username: req.user.username },
+                { $set: { membershipStatus: true } }
+            );
+            res.redirect("/");
+        }
+    }),
+];
+
+// user profile
+exports.user_profile_get = asyncHandler(async (req, res, next) => {
+    if (req.user) {
+        res.render("userProfile", { user: req.user });
     } else {
         res.redirect("/");
     }

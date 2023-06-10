@@ -3,9 +3,15 @@ extends layout
 block content
   div(class="formDiv")
     h1 Join the club!
-    p Enter the secret passcode to join our club! 
+    p Enter the secret passcode to join our club! (13572468)
 
     form(action="", method="post") 
-        label(for="code") Code:
-        input(type="password", name="code")
-        button(type="submit") Submit
+      label(for="code") #[strong Code:]
+      input(type="password", name="code")
+      div(class="submitBtn-div")
+        button(type="submit" class="submitBtn") Submit
+
+      if errors
+        ul
+        for error in errors
+          li!= error.msg

@@ -17,6 +17,19 @@ input {
     margin-bottom: 1rem;
 }
 
+textarea {
+    margin-bottom: 1rem;
+}
+
 ul {
     padding-left: 20px;
+}
+
+.submitBtn-div {
+    display: flex;
+    justify-content: center;
+}
+
+.submitBtn {
+    padding: 0.25em 1em;
 }

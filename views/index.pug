@@ -8,6 +8,8 @@ block content
           a(href="/logout") Logout
         li 
           a(href="/join-club") Join the club!
+        li
+          a(href="/profile") Profile
       else
         li
           a(href="/sign-up") Sign up
@@ -17,3 +19,29 @@ block content
   div
     if user
       h2 Welcome back #{user.fullname}
+    if user && user.membershipStatus
+      div(class="formDiv")
+        form(action="/submit-message" method="post") 
+          label(for="newMessageTitle") Title
+          input(type="text", name="newMessageTitle")
+          label(for="newMessageText" hidden) New Message
+          textarea(name="newMessageText", cols="30", rows="5")
+          div(class="submitBtn-div")
+            button(type="submit" class="submitBtn") Submit
+
+          if errors
+            ul
+              for error in errors
+                li!= error.msg
+
+  div  
+    if messages
+      for message in messages
+        div
+          if user
+            p= message.user.username
+          else
+            p Anonymous
+          p= message.title
+          p= message.text
+          p= message.timestamp_converted

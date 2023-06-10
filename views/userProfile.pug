@@ -1,0 +1,9 @@
+extends layout
+
+block content
+  p Name: #{user.fullname}
+  p Username: #{user.username}
+  if user.membershipStatus 
+    p Membership Status: Joined
+  else
+    p Membership Status: Not Joined
