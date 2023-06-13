@@ -4,7 +4,7 @@ block content
   div(class="formDiv")
     h1= title
    
-    form(action="", method="post") 
+    form(action="", method="post" class="mainForm") 
       label(for="username") #[strong Username:]
       input(type="email", name="username" value=(undefined===username ? "" : username))
       label(for="password") #[strong Password:]

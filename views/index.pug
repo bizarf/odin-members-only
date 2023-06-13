@@ -4,34 +4,34 @@ block content
   script(src="/javascripts/index.js") 
 
   nav
-    ul
+    div(class="logoDiv") 
+      h1 Secret Fun Club
+    ul(class="navbar")
       if user
-        li
-          a(href="/logout") Logout
         li 
           a(href="/join-club") Join the club!
         li
           a(href="/become-admin") Become admin
         li
-          a(href="/profile") Profile
+          a(href="/logout") Logout
       else
         li
           a(href="/sign-up") Sign up
         li
           a(href="/login") Login
 
-  div
+  div(class="newMessageContainer")
     if user
       h2 Welcome back #{user.fullname}
     if user
-      div(class="newMessageContainer")
+      div
         button(class='submitBtn', onclick="openNewMessageForm()") Add Message
         div(class="newMessageFormDiv")
-          form(action="/submit-message" method="post") 
-            label(for="newMessageTitle") Title
-            input(type="text", name="newMessageTitle" id="newMessageTitle")
-            label(for="newMessageText") Message
-            textarea(name="newMessageText" id="newMessageText", cols="30", rows="5" value=(undefined==message ? "" : message.text))
+          form(action="/submit-message" method="post" class="mainForm") 
+            label(for="newMessageTitle") #[strong Title] (max 50 characters):
+            input(type="text", name="newMessageTitle" id="newMessageTitle" maxlength=50)
+            label(for="newMessageText") #[strong Message] (max 250 characters):
+            textarea(name="newMessageText" id="newMessageText", cols="30", rows="5" maxlength=250 value=(undefined==message ? "" : message.text))
             div(class="submitBtn-div")
               button(type="submit" class="submitBtn") Submit
               button(type="button" class="submitBtn" onclick="cancelNewMessageForm()") Cancel
@@ -44,18 +44,21 @@ block content
   div(class="messageDiv")
     if messages
       for message in messages
-        div
-          if user && user.membershipStatus
-            p= message.user.fullname
-          else
-            p Anonymous
-          p= message.title
-          p= message.text
-          if user && user.membershipStatus
-            p= message.timestamp_converted
-          else
-            p Date: XX/XX/XX
-          if user && user.adminStatus
-            div
-              form(action="/delete-message" method="post") 
-                button(type="submit" value=message._id name="deleteMessage") Delete
+        div(class="messageContainer")
+          div(class="messageTop")
+            if user && user.membershipStatus
+              p #[strong From:] #{message.user.fullname}
+            else
+              p #[strong From:] Anonymous
+            div(class="messageTopRight")
+              if user && user.membershipStatus
+                p #[strong Posted on:] #{message.timestamp_converted}
+              else
+                p Date: XX/XX/XX
+              if user && user.adminStatus
+                form(action="/delete-message" method="post") 
+                  button(type="submit" value=message._id name="deleteMessage" class="deleteBtn") Delete
+          div(class="messageContent")
+            h3= message.title
+            p= message.text            
+            

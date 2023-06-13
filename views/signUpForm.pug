@@ -4,7 +4,7 @@ block content
   div(class="formDiv")
     h1= title
    
-    form(action="", method="post") 
+    form(action="", method="post" class="mainForm") 
       label(for="firstname") #[strong First Name:]
       input(type="text", name="firstname" value=(undefined===user ? "" : user.firstname))
       label(for="lastname") #[strong Last Name:]

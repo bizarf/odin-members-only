@@ -1,5 +1,50 @@
 @import url(./modern-normalize.css);
 
+body {
+    background-color: #38bdf8;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+}
+
+.logoDiv {
+    padding-left: 0.5rem;
+}
+
+.logoDiv h1 {
+    margin: 0;
+    background-color: #fbbf24;
+    padding: 1rem 1rem;
+    border-top-right-radius: 2.75rem;
+    border-bottom-left-radius: 2.75rem;
+}
+
+.navbar {
+    display: flex;
+    justify-content: center;
+    list-style-type: none;
+    margin: 0;
+    padding: 1.5rem 0;
+}
+
+.navbar li {
+    display: inline;
+    margin: 0 0.5rem;
+}
+
+.navbar a {
+    color: inherit;
+    text-decoration: none;
+    padding: 1rem 1rem;
+    background-color: #fbbf24;
+    border-radius: 0.75rem;
+    font-size: large;
+}
+
 .formDiv,
 .newMessageFormDiv {
     display: flex;
@@ -7,11 +52,13 @@
     flex-direction: column;
 }
 
-form {
+.mainForm {
     display: flex;
     flex-direction: column;
-    padding: 1rem 0;
+    padding: 1rem 1rem;
     width: 25rem;
+    background-color: #fdba74;
+    border-radius: 0.75rem;
 }
 
 input {
@@ -28,7 +75,7 @@ ul {
 
 .submitBtn-div {
     display: flex;
-    justify-content: center;
+    justify-content: space-evenly;
 }
 
 .submitBtn {
@@ -37,7 +84,19 @@ ul {
 
 .newMessageContainer {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding: 0 1.5rem;
+}
+
+.messageContainer p {
+    margin: 0;
+    overflow-wrap: break-word;
+}
+
+.messageContainer h3 {
+    margin: 0.25rem 0;
 }
 
 .newMessageFormDiv {
@@ -45,4 +104,40 @@ ul {
 }
 
 .messageDiv {
+    background-color: white;
+    margin: 0 4rem;
+    border-radius: 0.75rem;
+    padding: 0.5rem 2rem;
+}
+
+.messageContainer {
+    border: solid 2px;
+    padding: 0 1rem;
+    margin: 1rem 0;
+    border-radius: 0.75rem;
+}
+
+.messageTop {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+}
+
+.messageTopRight {
+    display: flex;
+    align-items: center;
+}
+
+.messageTopRight form {
+    display: block;
+    width: min-content;
+}
+
+.deleteBtn {
+    padding: 0 1em;
+    margin-left: 0.75rem;
+}
+
+.messageContent {
+    padding-bottom: 0.5rem;
 }

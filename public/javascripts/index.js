@@ -15,8 +15,3 @@ const cancelNewMessageForm = () => {
     document.querySelector("#newMessageTitle").value = "";
     document.querySelector("#newMessageText").value = "";
 };
-
-// delete button
-const deleteMessageBtn = (e) => {
-    console.log(e);
-};
