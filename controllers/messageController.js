@@ -7,11 +7,19 @@ const { body, validationResult } = require("express-validator");
 exports.message_list_get = asyncHandler(async (req, res, next) => {
     const messages = await Message.find().populate("user").exec();
 
-    res.render("index", { user: req.user, messages: messages });
+    res.render("index", {
+        user: req.user,
+        messages: messages,
+    });
 });
 
 // message submission post function
 exports.message_submission_post = [
+    body("newMessageTitle")
+        .trim()
+        .escape()
+        .notEmpty()
+        .withMessage("Please type in a title"),
     body("newMessageText")
         .trim()
         .escape()
@@ -19,6 +27,8 @@ exports.message_submission_post = [
         .withMessage("Please type in a message."),
 
     asyncHandler(async (req, res, next) => {
+        const messages = await Message.find().populate("user").exec();
+
         const errors = validationResult(req);
 
         const message = new Message({
@@ -31,6 +41,8 @@ exports.message_submission_post = [
         if (!errors.isEmpty()) {
             res.render("index", {
                 user: req.user,
+                messages: messages,
+                message: message,
                 errors: errors.array(),
             });
             return;
@@ -40,3 +52,11 @@ exports.message_submission_post = [
         }
     }),
 ];
+
+// delete message button POST
+exports.message_delete_post = asyncHandler(async (req, res, next) => {
+    const message = await Message.findOneAndRemove({
+        _id: req.body.deleteMessage,
+    });
+    res.redirect("/");
+});

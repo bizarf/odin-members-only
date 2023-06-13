@@ -1,6 +1,7 @@
 @import url(./modern-normalize.css);
 
-.formDiv {
+.formDiv,
+.newMessageFormDiv {
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -32,4 +33,16 @@ ul {
 
 .submitBtn {
     padding: 0.25em 1em;
+}
+
+.newMessageContainer {
+    display: flex;
+    justify-content: center;
+}
+
+.newMessageFormDiv {
+    display: none;
+}
+
+.messageDiv {
 }

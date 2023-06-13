@@ -1,6 +1,8 @@
 extends layout
-
+  
 block content
+  script(src="/javascripts/index.js") 
+
   nav
     ul
       if user
@@ -8,6 +10,8 @@ block content
           a(href="/logout") Logout
         li 
           a(href="/join-club") Join the club!
+        li
+          a(href="/become-admin") Become admin
         li
           a(href="/profile") Profile
       else
@@ -19,29 +23,39 @@ block content
   div
     if user
       h2 Welcome back #{user.fullname}
-    if user && user.membershipStatus
-      div(class="formDiv")
-        form(action="/submit-message" method="post") 
-          label(for="newMessageTitle") Title
-          input(type="text", name="newMessageTitle")
-          label(for="newMessageText" hidden) New Message
-          textarea(name="newMessageText", cols="30", rows="5")
-          div(class="submitBtn-div")
-            button(type="submit" class="submitBtn") Submit
+    if user
+      div(class="newMessageContainer")
+        button(class='submitBtn', onclick="openNewMessageForm()") Add Message
+        div(class="newMessageFormDiv")
+          form(action="/submit-message" method="post") 
+            label(for="newMessageTitle") Title
+            input(type="text", name="newMessageTitle" id="newMessageTitle")
+            label(for="newMessageText") Message
+            textarea(name="newMessageText" id="newMessageText", cols="30", rows="5" value=(undefined==message ? "" : message.text))
+            div(class="submitBtn-div")
+              button(type="submit" class="submitBtn") Submit
+              button(type="button" class="submitBtn" onclick="cancelNewMessageForm()") Cancel
 
           if errors
             ul
               for error in errors
                 li!= error.msg
 
-  div  
+  div(class="messageDiv")
     if messages
       for message in messages
         div
-          if user
-            p= message.user.username
+          if user && user.membershipStatus
+            p= message.user.fullname
           else
             p Anonymous
           p= message.title
           p= message.text
-          p= message.timestamp_converted
+          if user && user.membershipStatus
+            p= message.timestamp_converted
+          else
+            p Date: XX/XX/XX
+          if user && user.adminStatus
+            div
+              form(action="/delete-message" method="post") 
+                button(type="submit" value=message._id name="deleteMessage") Delete

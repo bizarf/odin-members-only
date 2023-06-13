@@ -2,8 +2,8 @@ extends layout
 
 block content
   div(class="formDiv")
-    h1 Join the club!
-    p Enter the secret passcode to join our club! (13572468)
+    h1= title
+    p= message
 
     form(action="", method="post") 
       label(for="code") #[strong Code:]

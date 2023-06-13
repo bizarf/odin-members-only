@@ -81,7 +81,14 @@ app.use(cookieParser());
 // enable compression
 app.use(compression());
 // helmet setup
-app.use(helmet());
+// app.use(helmet());
+app.use(
+    helmet.contentSecurityPolicy({
+        directives: {
+            "script-src-attr": ["'unsafe-inline'"],
+        },
+    })
+);
 // express rate limiter
 const RateLimit = require("express-rate-limit");
 const limiter = RateLimit({

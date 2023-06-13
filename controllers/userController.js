@@ -87,7 +87,19 @@ exports.user_login_get = asyncHandler(async (req, res, next) => {
 
 // login form POST
 exports.user_login_post = [
-    body("username").trim().escape(),
+    body("username")
+        .trim()
+        .escape()
+        .notEmpty()
+        .withMessage("The username must not be empty"),
+    // .custom(async (value, { req, res }) => {
+    //     const user = await User.findOne({
+    //         username: req.body.username,
+    //     }).exec();
+    //     if (!user) {
+    //         throw new Error("Username does not exist");
+    //     }
+    // }),
     body("password")
         .trim()
         .escape()
@@ -98,9 +110,14 @@ exports.user_login_post = [
             const user = await User.findOne({
                 username: req.body.username,
             }).exec();
-            const check = await bcrypt.compare(value, user.password);
-            if (!check) {
-                throw new Error("Incorrect password");
+
+            if (user) {
+                const check = await bcrypt.compare(value, user.password);
+                if (!check) {
+                    throw new Error("Incorrect password");
+                }
+            } else {
+                throw new Error("Username does not exist");
             }
         }),
 
@@ -135,7 +152,10 @@ exports.user_logout_get = asyncHandler(async (req, res, next) => {
 // join club form GET
 exports.user_joinClub_get = asyncHandler(async (req, res, next) => {
     if (req.user && req.user.membershipStatus === false) {
-        res.render("joinClub");
+        res.render("memberStatusForm", {
+            title: "Join the club!",
+            message: "Enter the secret passcode to join our club!",
+        });
     } else {
         res.redirect("/");
     }
@@ -151,7 +171,7 @@ exports.user_joinClub_post = [
         .withMessage("You must enter a code")
         .custom(async (value, { req, res }) => {
             await value;
-            if (value != 13572468) {
+            if (value != process.env.CLUB_PASSCODE) {
                 throw new Error("Wrong code!");
             }
         }),
@@ -160,7 +180,9 @@ exports.user_joinClub_post = [
         const errors = validationResult(req);
 
         if (!errors.isEmpty()) {
-            res.render("joinClub", {
+            res.render("memberStatusForm", {
+                title: "Join the club!",
+                message: "Enter the secret passcode to join our club!",
                 errors: errors.array(),
             });
             return;
@@ -169,6 +191,53 @@ exports.user_joinClub_post = [
             await User.findOneAndUpdate(
                 { username: req.user.username },
                 { $set: { membershipStatus: true } }
+            );
+            res.redirect("/");
+        }
+    }),
+];
+
+// admin join form GET
+exports.user_become_admin_get = asyncHandler(async (req, res, next) => {
+    if (req.user) {
+        res.render("memberStatusForm", {
+            title: "Become Admin",
+            message: "Enter the secret passcode to become an Admin",
+        });
+    } else {
+        res.redirect("/");
+    }
+});
+
+// admin join form POST
+exports.user_become_admin_post = [
+    body("code")
+        .trim()
+        .escape()
+        .notEmpty()
+        .withMessage("You must enter a code")
+        .custom(async (value, { req, res }) => {
+            await value;
+            if (value != process.env.ADMIN_PASSCODE) {
+                throw new Error("Wrong code!");
+            }
+        }),
+
+    asyncHandler(async (req, res, next) => {
+        const errors = validationResult(req);
+
+        if (!errors.isEmpty()) {
+            res.render("memberStatusForm", {
+                title: "Become Admin",
+                message: "Enter the secret passcode to become an Admin",
+                errors: errors.array(),
+            });
+            return;
+        } else {
+            // find by the username and then set the membershipStatus to true
+            await User.findOneAndUpdate(
+                { username: req.user.username },
+                { $set: { adminStatus: true } }
             );
             res.redirect("/");
         }
