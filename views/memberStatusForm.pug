@@ -3,15 +3,21 @@ extends layout
 block content
   div(class="formDiv")
     h1= title
+    
     p= message
 
-    form(action="", method="post" class="mainForm") 
-      label(for="code") #[strong Code:]
-      input(type="password", name="code")
-      div(class="submitBtn-div")
-        button(type="submit" class="submitBtn") Submit
+    if redirectMsg
+      h4= redirectMsg
+    else 
+      form(action="", method="post" class="mainForm") 
+        label(for="code") #[strong Code:]
+        input(type="password", name="code")
+        div(class="submitBtn-div")
+          button(type="submit" class="submitBtn") Submit
 
-      if errors
-        ul
-        for error in errors
-          li!= error.msg
+        if errors
+          ul
+          for error in errors
+            li!= error.msg
+    
+    a(href="/" class="homepageRedirectBtn") Go back to the Home page

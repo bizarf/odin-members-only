@@ -141,3 +141,13 @@ ul {
 .messageContent {
     padding-bottom: 0.5rem;
 }
+
+.homepageRedirectBtn {
+    margin-top: 1rem;
+    color: inherit;
+    text-decoration: none;
+    padding: 1rem 1rem;
+    background-color: #fbbf24;
+    border-radius: 0.75rem;
+    font-size: large;
+}

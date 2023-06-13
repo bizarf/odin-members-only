@@ -151,9 +151,15 @@ exports.user_logout_get = asyncHandler(async (req, res, next) => {
 
 // join club form GET
 exports.user_joinClub_get = asyncHandler(async (req, res, next) => {
-    if (req.user && req.user.membershipStatus === false) {
+    if (req.user && !req.user.membershipStatus) {
         res.render("memberStatusForm", {
             title: "Join the club!",
+            message: "Enter the secret passcode to join our club!",
+        });
+    } else if (req.user && req.user.membershipStatus) {
+        res.render("memberStatusForm", {
+            title: "Join the club!",
+            redirectMsg: "You are already a member.",
             message: "Enter the secret passcode to join our club!",
         });
     } else {
@@ -199,9 +205,15 @@ exports.user_joinClub_post = [
 
 // admin join form GET
 exports.user_become_admin_get = asyncHandler(async (req, res, next) => {
-    if (req.user) {
+    if (req.user && !req.user.adminStatus) {
         res.render("memberStatusForm", {
             title: "Become Admin",
+            message: "Enter the secret passcode to become an Admin",
+        });
+    } else if (req.user && req.user.adminStatus) {
+        res.render("memberStatusForm", {
+            title: "Become Admin",
+            redirectMsg: "You are already an admin.",
             message: "Enter the secret passcode to become an Admin",
         });
     } else {
